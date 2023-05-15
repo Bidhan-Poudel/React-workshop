@@ -1,22 +1,82 @@
-import React, { useEffect, useState } from 'react'
-import Layout from '../layouts'
-import { useUsers } from '../hooks/useUsers'
+import { useState } from 'react';
+import { useUsers } from '../hooks/useUsers';
+import Layout from '../layouts';
 
-const UsersPage = () => {
+const Users = () => {
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  const { postNewUser, editUser, removeUser, users } = useUsers();
+  const [editingUserId, setEditingUserId] = useState(null);
 
-  const {users } = useUsers()
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (editingUserId) {
+      await editUser(editingUserId, name, age);
+    } else {
+      await postNewUser(name, age);
+    }
+
+    setName('');
+    setAge('');
+    setEditingUserId(null);
+  };
+
+  const handleDelete = async (_id) => {
+    await removeUser(_id);
+  };
+
+  const handleEdit = (user) => {
+    setEditingUserId(user._id);
+    setName(user.name);
+    setAge(user.age);
+  };
 
   return (
     <Layout>
-      Users List from backend:
-      <ul>
-        {users.map(({ name, age})=><li className='flex gap-4' key={`${name}-${age}`}>
-            <div>{name}</div>
-            <div>{age}</div>
-        </li>)}
-      </ul>
+      <h1>{editingUserId ? 'Update User Data' : 'Add User Data'}</h1>
+      <div className='text-purple-700 my-10'>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Name:
+            <input
+              type='text'
+              value={name}
+              className='block border border-black'
+              onChange={(e) => setName(e.target.value)}
+            />
+          </label>
+          <label>
+            Age:
+            <input
+              type='text'
+              value={age}
+              className='block border border-black'
+              onChange={(e) => setAge(e.target.value)}
+            />
+          </label>
+          <button
+            type='submit'
+            className='bg-purple-400 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded mx-5 my-4'
+          >
+            {editingUserId ? 'Update User' : 'Add User'}
+          </button>
+        </form>
+      </div>
+      <div>
+        <h2>List form backend are:</h2>
+        <ul>
+          {users.map((user) => (
+            <li key={user._id}>
+              {user.name} - {user.age}
+              <button onClick={() => handleEdit(user)}className='mx-3'>Edit</button>
+              <button onClick={() => handleDelete(user._id)}className='mx-3'>Delete</button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default UsersPage
+export default Users;

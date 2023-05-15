@@ -19,24 +19,24 @@ import axiosInstance from "./axiosInstance"
 // completely asynchronos which returns promise as a whole
 export const getUsers = async () => {
     //start
-    const result = await axiosInstance.get("/api/users")  // fulfilled, rejected
+    const result = await axiosInstance.get("/users")  // fulfilled, rejected
     //stop
     return result.data 
 }
 
 // alternate way
-export const getUsersThroughCallback = ()=>{
-    return axiosInstance.get("/api/users")
-    .then(res=>{
-        return res.data
-    })
-}
+// export const getUsersThroughCallback = ()=>{
+//     return axiosInstance.get("/api/users")
+//     .then(res=>{
+//         return res.data
+//     })
+// }
 
 export const postUser = async ({
     name,
     age
 }) => {
-    const result = await axiosInstance.post("/api/users", {
+    const result = await axiosInstance.post("/users", {
         name,
         age
     })
@@ -48,7 +48,7 @@ export const updateUser = async ({
     name,
     age
 }) => {
-    const result = await axiosInstance.put(`/api/users/${_id}`, {
+    const result = await axiosInstance.put(`/users/${_id}`, {
         name,
         age
     })
@@ -58,6 +58,6 @@ export const updateUser = async ({
 export const deleteUser = async ({
     _id
 }) => {
-    const result = await axiosInstance.delete(`/api/users/${_id}`)
+    const result = await axiosInstance.delete(`/users/${_id}`)
     return result.data
 }
