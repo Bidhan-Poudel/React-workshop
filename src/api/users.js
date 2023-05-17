@@ -61,3 +61,10 @@ export const deleteUser = async ({
     const result = await axiosInstance.delete(`/users/${_id}`)
     return result.data
 }
+
+export const getUserDetail = async({
+    _id
+})=>{
+    const result= await axiosInstance.get(`/users/${_id}`);
+    return result.data;
+}

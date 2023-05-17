@@ -64,16 +64,30 @@ const Users = () => {
         </form>
       </div>
       <div>
+        
         <h2>List form backend are:</h2>
-        <ul>
+
+        <table className='border-solid border-collapse border-2 border-black text-center text-purple-700'>
+          <thead>
+            <tr>
+            <th className='border-solid border-collapse border-2 border-black px-2 py-2'>Name</th>
+            <th className='border-solid border-collapse border-2 border-black px-2 py-2'>Age</th>
+            <th className='border-solid border-collapse border-2 border-black px-2 py-2'>Edit</th>
+            <th className='border-solid border-collapse border-2 border-black px-2 py-2'>Delete</th>
+            </tr>
+          </thead>
+          
+          <tbody style={{border:"2px solid black"}}>
           {users.map((user) => (
-            <li key={user._id}>
-              {user.name} - {user.age}
-              <button onClick={() => handleEdit(user)}className='mx-3'>Edit</button>
-              <button onClick={() => handleDelete(user._id)}className='mx-3'>Delete</button>
-            </li>
+              <tr  key={user._id}>
+              <td className='border-solid border-collapse border-2 border-black px-2 py-2'>{user.name}</td>
+              <td className='border-solid border-collapse border-2 border-black px-2 py-2'>{user.age}</td>
+              <td className='border-solid border-collapse border-2 border-black px-2 py-2'><button onClick={() => handleEdit(user)}className='mx-3'>Edit</button></td>
+              <td className='border-solid border-collapse border-2 border-black px-2 py-2'><button onClick={() => handleDelete(user._id)}className='mx-3'>Delete</button></td>
+              </tr>
           ))}
-        </ul>
+          </tbody>
+          </table>
       </div>
     </Layout>
   );

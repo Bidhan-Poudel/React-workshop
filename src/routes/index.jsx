@@ -4,8 +4,11 @@ import Contact from "../pages/contact";
 import ContextPage from "../pages/context";
 import ItemsPage from "../pages/items";
 import Page404 from "../pages/Page404";
-import Users from "../pages/Users";
-// import UsersPage from "../pages/users.jsx";
+import UsersPage from "../pages/Users/index";
+import CreateOrEditUser from "../pages/Users/createOrEdit";
+import ViewUser from "../pages/Users/view";
+// import Users from "../pages/Users";
+
 
 export const routes = [
   {
@@ -37,14 +40,21 @@ export const routes = [
     path: "/items",
     element: <ItemsPage/>
   },
-  // {
-  //   path: "/users",
-  //   name: "Users",
-  //   element: <UsersPage/>
-  // },
   {
-    path:"/Users",
     name:"Users",
-    element:<Users/>
+    path:"/users",
+    element:<UsersPage/>
+  },
+  {
+    path:"/users/create",
+    element:<CreateOrEditUser />
+  },
+  {
+    path:"/users/:id",
+    element:<ViewUser/>
+  },
+  {
+    path:"/users/:id/edit",
+    element:<CreateOrEditUser />
   }
 ];
