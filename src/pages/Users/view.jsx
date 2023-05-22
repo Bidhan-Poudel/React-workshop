@@ -9,7 +9,7 @@ const ViewUser = () => {
 
     const Params= useParams();
     const {getUserById}= useUsers();
-    const[data,setData]=useState({name:'',age:''});
+    const[data,setData]=useState({});
 
     useEffect(()=>{
       if(Params.id){
@@ -30,7 +30,10 @@ const ViewUser = () => {
         </Link>
         </div>
       </div>
-      {data.name} {data.age}
+      {data.name} 
+      {data.address}
+      {data.email}
+      {data.age}
       </Card>
     </Layout>
   )

@@ -67,6 +67,8 @@ const UsersPage = () => {
           <tbody>
             <tr>
               <th className="border border-slate-600 px-3 py-2 ">Name</th>
+              <th className="border border-slate-600 px-3 py-2">Email</th>
+              <th className="border border-slate-600 px-3 py-2">Address</th>
               <th className="border border-slate-600 px-3 py-2">Age</th>
               <th className="border border-slate-600 px-3 py-2">Actions</th>
             </tr>
@@ -80,6 +82,8 @@ const UsersPage = () => {
             {users.map((user) => (
               <tr key={user._id}>
                 <td className="border border-slate-600 ">{user.name}</td>
+                <td className="border border-slate-600 ">{user.email}</td>
+                <td className="border border-slate-600 ">{user.address}</td>
                 <td className="border border-slate-600 ">{user.age}</td>
                 <td className="border border-slate-600 flex px-4 gap-3 ">
                   {[

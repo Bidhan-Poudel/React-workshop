@@ -19,7 +19,7 @@ import axiosInstance from "./axiosInstance"
 // completely asynchronos which returns promise as a whole
 export const getUsers = async () => {
     //start
-    const result = await axiosInstance.get("/users")  // fulfilled, rejected
+    const result = await axiosInstance.get("/register")  // fulfilled, rejected
     //stop
     return result.data 
 }
@@ -34,10 +34,16 @@ export const getUsers = async () => {
 
 export const postUser = async ({
     name,
+    password,
+    email,
+    address,
     age
 }) => {
-    const result = await axiosInstance.post("/users", {
+    const result = await axiosInstance.post("/register", {
         name,
+        password,
+        email,
+        address,
         age
     })
     return result.data
@@ -46,10 +52,16 @@ export const postUser = async ({
 export const updateUser = async ({
     _id,
     name,
+    password,
+    email,
+    address,
     age
 }) => {
-    const result = await axiosInstance.put(`/users/${_id}`, {
+    const result = await axiosInstance.put(`/register/${_id}`, {
         name,
+        password,
+        email,
+        address,
         age
     })
     return result.data
@@ -58,13 +70,13 @@ export const updateUser = async ({
 export const deleteUser = async ({
     _id
 }) => {
-    const result = await axiosInstance.delete(`/users/${_id}`)
+    const result = await axiosInstance.delete(`/register/${_id}`)
     return result.data
 }
 
 export const getUserDetail = async({
     _id
 })=>{
-    const result= await axiosInstance.get(`/users/${_id}`);
+    const result= await axiosInstance.get(`/register/${_id}`);
     return result.data;
 }

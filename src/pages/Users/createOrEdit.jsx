@@ -13,7 +13,7 @@ const CreateOrEditUser = () => {
     const navigate=useNavigate()
     const {getUserById,postNewUser,editUser}= useUsers()
 
-    const [data, setData]= useState({name:'',age:''});
+    const [data, setData]= useState({name:'',password:'',email:'',address:'',age:''});
 
     useEffect(()=>{
         if(Params.id){
@@ -26,14 +26,15 @@ const CreateOrEditUser = () => {
          let message;
         if(Params.id){
           console.log('edit')
-          await editUser(Params.id,data.name,data.age);
+          await editUser(Params.id,data.name,data.password,data.email,data.address,data.age);
           message="User edited successfully"
         }else{
           console.log('create')
-          await postNewUser(data.name,data.age);
+          console.log(data.name,data.password,data.email,data.address,data.age)
+          await postNewUser(data.name,data.password,data.email,data.address,data.age);
           message="User created successfully"
         }
-        setData({name:'',age:''});
+        setData({name:'',password:'',email:'',address:'',age:''});
         navigate("/users")
         setTimeout(()=>{
             toast.success(message);
@@ -62,6 +63,18 @@ const CreateOrEditUser = () => {
                         <tr>
                             <th>Name:</th>
                             <th><input type="text" value={data.name} name= 'name' onChange={(e)=>{setData({...data,name:e.target.value})} }/></th>
+                        </tr>
+                        <tr>
+                            <th>Password:</th>
+                            <th><input type="text" value={data.password} name='email' onChange={(e)=>{setData({...data,password:e.target.value})} } /></th>
+                        </tr>
+                        <tr>
+                            <th>Email:</th>
+                            <th><input type="text" value={data.email} name='email' onChange={(e)=>{setData({...data,email:e.target.value})} } /></th>
+                        </tr>
+                        <tr>
+                            <th>Address:</th>
+                            <th><input type="text" value={data.address} name='address' onChange={(e)=>{setData({...data,address:e.target.value})} } /></th>
                         </tr>
                         <tr>
                             <th>Age:</th>

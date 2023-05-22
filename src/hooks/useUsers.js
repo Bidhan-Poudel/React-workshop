@@ -25,16 +25,16 @@ export const useUsers = () => {
     return userResponse;
   }
 
-  const postNewUser = async (name, age) => {
+  const postNewUser = async (name, password,email,address,age) => {
     setLoading(true);
-    const newUser = { name, age }
+    const newUser = { name, password,email,address,age}
     const addedUser = await postUser(newUser)
     setUsers([...users, addedUser])
     setLoading(false);
   }
 
-  const editUser = async (_id, name, age) => {
-    const updatedUser = await updateUser({ _id, name, age })
+  const editUser = async (_id, name, password,email,address,age) => {
+    const updatedUser = await updateUser({ _id,name, password,email,address,age })
     setUsers(prevUsers =>
       prevUsers.map(user => (user._id === updatedUser._id ? updatedUser : user))
     )
