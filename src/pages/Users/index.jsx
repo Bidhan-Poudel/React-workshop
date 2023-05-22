@@ -1,23 +1,62 @@
-import React from "react";
+import React, {useState} from "react";
 import { useUsers } from "../../hooks/useUsers";
 import Layout from "../../layouts/index";
-// import Card from '../../components/card'
+import Card from '../../components/card'
 import Button from "../../components/button";
 import { Link, useNavigate } from "react-router-dom";
-import Card from "../../components/card";
+import Modal from "../../components/model";
+import { toast } from "react-hot-toast";
+
 
 const UsersPage = () => {
   const navigate = useNavigate();
   const { users, loading, removeUser } = useUsers();
-  const handleDelete = (user) => {
-    removeUser(user._id);
+
+  const [showDelete,setShowDelete]= useState(false)
+  const[selectedUser,setSelectedUser]=useState({})
+  const[showEdit,setShowEdit]=useState(false)
+  
+  const handleDelete = async (user) => {
+    await removeUser(user._id);
+    setSelectedUser({});
+    setShowDelete(false);
+    toast.success("User deleted successfully");
   };
+
+  const handleEdit= async (user)=>{
+
+    navigate(`/users/${user._id}/edit`);
+    setSelectedUser({});
+    setShowDelete(false);
+  }
 
   return (
     <Layout>
+      <Modal open= {showDelete} className="w-[400px]">
+        <div className="text-2xl">
+          <p>Do you really want to delete?</p>
+          <small className="text-sm">You are about to delete a user with {selectedUser?.name} and of age {selectedUser?.age}.</small>
+        </div>
+        <div className="flex justify-end gap-4">
+          <Button onClick={()=>handleDelete(selectedUser)}text='Yes' />
+          <Button onClick={()=>setShowDelete(false)} text='Cancel'/>
+        </div>
+      </Modal>
+
+      <Modal open= {showEdit} className="w-[400px]">
+        <div className="text-2xl">
+          <p>Do you really want to Edit?</p>
+          <small className="text-sm">You are about to edit a user with {selectedUser?.name} and of age {selectedUser?.age}.</small>
+        </div>
+        <div className="flex justify-end gap-4">
+          <Button onClick={()=>handleEdit(selectedUser)}text='Yes' />
+          <Button onClick={()=>setShowEdit(false)} text='Cancel'/>
+        </div>
+      </Modal>
+
       <Card>
 
-      <div className="flex w-full justify-between items-center">
+      <div className="flex w-full justify-between items-c enter">
         <h1 className="text-2xl text-primary">Users</h1>
         <Link to="/users/create">
           <Button text={"Create user"} />
@@ -47,7 +86,8 @@ const UsersPage = () => {
                     {
                       label: "Edit",
                       onClick: () => {
-                        navigate(`/users/${user._id}/edit`);
+                        setShowEdit(true);
+                        setSelectedUser(user);
                       },
                     },
                     {
@@ -59,8 +99,8 @@ const UsersPage = () => {
                     {
                       label: "Delete",
                       onClick: (e) => {
-                        e.preventDefault();
-                        handleDelete(user);
+                        setShowDelete(true)
+                        setSelectedUser(user)
                       },
                     },
                   ].map((action) => (

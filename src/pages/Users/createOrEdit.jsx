@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import {Link, useNavigate, useParams } from 'react-router-dom'
 import { useUsers } from '../../hooks/useUsers'
 import Layout from '../../layouts'
 import Button from '../../components/button'
 import Card from '../../components/card'
+import { toast } from 'react-hot-toast'
+
+
 const CreateOrEditUser = () => {
 
     const Params= useParams();
+    const navigate=useNavigate()
     const {getUserById,postNewUser,editUser}= useUsers()
 
     const [data, setData]= useState({name:'',age:''});
@@ -19,14 +23,21 @@ const CreateOrEditUser = () => {
 
     const handleSubmit=async (e)=>{
          e.preventDefault()
+         let message;
         if(Params.id){
           console.log('edit')
           await editUser(Params.id,data.name,data.age);
+          message="User edited successfully"
         }else{
           console.log('create')
           await postNewUser(data.name,data.age);
+          message="User created successfully"
         }
         setData({name:'',age:''});
+        navigate("/users")
+        setTimeout(()=>{
+            toast.success(message);
+        },200)
     }
 
     
@@ -34,10 +45,15 @@ const CreateOrEditUser = () => {
 
 
   return (
-    <Layout>
+    <Layout>   
+        
+
         <Card>
         <div className='flex justify-between items-center gap-9'>
             <h1 className='text-2xl text-primary'>{Params.id? "Edit":"Create"} User</h1>
+            <Link to="/users">
+                <Button text={"Users List"}/>
+            </Link>
         </div>
         <div>
             <form onSubmit={handleSubmit}>
