@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react"
+import { loginUserApi } from "../api/users"
 
 export const UserContext = createContext()
 
@@ -41,7 +42,7 @@ export const UserProvider = ({ children }) => {
         }
     }
 
-    const loginUser = ({
+    const loginUser = async({
         email,
         password
     }) => {
@@ -50,31 +51,46 @@ export const UserProvider = ({ children }) => {
                 error: "All fields are required"
             }
         }
-        const filteredUsers = users.filter(each=>each.email === email && each.password === password)
-
-        if (filteredUsers.length === 0) {
-            return {
-                error: "User doesnot exist"
+        
+        try{
+            const userResponse= await loginUserApi({email,password})
+            console.log("Userdata from backend",userResponse)
+            localStorage.setItem("currentUser",JSON.stringify({email}))
+            localStorage.setItem("accessToken",userResponse.data.accessToken)
+            setUser({email})
+            setIsLoggedIn(true)
+            return{
+                success:true
+            }
+        }
+        catch(e){
+            return{
+                error:e?.response?.data?.message??"Somethings went wrong"
             }
         }
 
-        
-        const loggedInUser = users.find(each => each.email === email && each.password === password)
-        localStorage.setItem("currentUser", JSON.stringify(loggedInUser))
-        setUser(loggedInUser)
-        setIsLoggedIn(true)
+        // const filteredUsers = users.filter(each=>each.email === email && each.password === password)
 
-        return {
-            success: true
-        }
+        // if (filteredUsers.length === 0) {
+        //     return {
+        //         error: "User doesnot exist"
+        //     }
+        // }
+
+        
+        // const loggedInUser = users.find(each => each.email === email && each.password === password)
+        // localStorage.setItem("currentUser", JSON.stringify(loggedInUser))
+        // setUser(loggedInUser)
+        // setIsLoggedIn(true)
+
+        // return {
+        //     success: true
+        // }
     }
 
-    const registerUser = ({
-        name,
-        email,
-        address,
-        password
-    }) => {
+    const registerUser = async (
+        {name,password,email,address,age}
+    ) => {
         const response = {}
         if (!password | !email | !address | !name) {
             response.error = "All fields are required"

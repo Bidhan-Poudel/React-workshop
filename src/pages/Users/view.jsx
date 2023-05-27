@@ -31,8 +31,6 @@ const ViewUser = () => {
         </div>
       </div>
       {data.name} 
-      {data.address}
-      {data.email}
       {data.age}
       </Card>
     </Layout>
