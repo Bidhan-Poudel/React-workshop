@@ -9,7 +9,7 @@ const initialSignupData = {
   email: "",
   address: "",
   password: "",
-  age:""
+
 }
 
 const initialLoginData = {
@@ -73,9 +73,9 @@ const Login = () => {
     }
   }
 
-  const onSignup = (e) => {
+  const onSignup = async(e) => {
     e.preventDefault()
-    const response = registerUser(signupData);
+    const response = await registerUser(signupData);
     console.log("Signup response", response)
     if (response.error) {
       setError({

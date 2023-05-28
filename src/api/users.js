@@ -29,6 +29,17 @@ export const loginUserApi=async({
     return result.data
 }
 
+export const postRegisterUserApi= async({
+    email,
+    password,
+    name,
+    address
+})=>{
+    const result= await axiosInstance.post("/register",{email,password,name,address})
+    return result.data
+}
+
+
 export const getUsers = async () => {
     //start
     const result = await axiosInstance.get("/users")  // fulfilled, rejected

@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import { loginUserApi } from "../api/users"
+import { loginUserApi,postRegisterUserApi } from "../api/users"
+
 
 export const UserContext = createContext()
 
@@ -89,51 +90,58 @@ export const UserProvider = ({ children }) => {
     }
 
     const registerUser = async (
-        {name,password,email,address,age}
+        {name,password,email,address}
     ) => {
-        const response = {}
-        if (!password | !email | !address | !name) {
-            response.error = "All fields are required"
-            return response
+        try{
+
+            const addedUser = await postRegisterUserApi({email,password,name,address})
+            setUsers([addedUser]);
+
+
+            
         }
-        // "bidhan " => "bidhan" => [ "bidhan"]
-        if (name.trim().split(" ").length < 2) {
-            response.error = "Name with surname is required"
-            response.field = "name"
-            return response
+        catch(e){
+            console.log(e?.response?.data?.message);
+            return{
+                error:e?.response?.data?.message??"Something went wrong"
+            }
         }
-
-        if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
-            response.error = "Valid email is required"
-            response.field = "email"
-            return response
-        }
-
-        if (users.filter(usr => usr.email === email).length > 0) {
-            response.error = "User with the email already exists"
-            response.field = "email"
-            return response
-        }
+        // console.log("Userdata from backend", userResponse);
 
 
-        setUsers(prev =>{
-            const updatedUserArray =  [
-                {
-                    name,
-                    email,
-                    address,
-                    password,
-                    createdAt: Date.now()
-                },
-                ...prev
-            ];
 
-            const userArrayAsString = JSON.stringify(updatedUserArray) //for converting object Array to string
-            window.localStorage.setItem("users", userArrayAsString) // store to local storage 
-            return updatedUserArray
-        })
-        response.success = true
-        return response
+        // if (!password | !email | !address | !name) {
+        //     response.error = "All fields are required"
+        //     return response
+        // }
+        // // "bidhan " => "bidhan" => [ "bidhan"]
+        // if (name.trim().split(" ").length < 2) {
+        //     response.error = "Name with surname is required"
+        //     response.field = "name"
+        //     return response
+        // }
+
+        // if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+        //     response.error = "Valid email is required"
+        //     response.field = "email"
+        //     return response
+        // }
+
+        // if (users.filter(usr => usr.email === email).length > 0) {
+        //     response.error = "User with the email already exists"
+        //     response.field = "email"
+        //     return response
+        
+        // }
+
+
+        
+        //     const userArrayAsString = JSON.stringify(updatedUserArray) //for converting object Array to string
+        //     window.localStorage.setItem("users", userArrayAsString) // store to local storage 
+        //     return updatedUserArray
+        // })
+        // response.success = true
+        // return response
     }
 
     return <UserContext.Provider value={{
