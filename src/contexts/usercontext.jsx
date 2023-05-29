@@ -95,7 +95,7 @@ export const UserProvider = ({ children }) => {
         try{
 
             const addedUser = await postRegisterUserApi({email,password,name,address})
-            setUsers([addedUser]);
+            return addedUser
 
 
             

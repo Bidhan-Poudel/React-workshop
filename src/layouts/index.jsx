@@ -11,8 +11,7 @@ const Layout = ({ children }) => {
     <div 
       className="mx-20 my-5 flex flex-col items-center"
     >
-      <Header />
-      {isLoggedIn ? children : <Login/>}
+      {isLoggedIn ?(<><Header />{ children}</> ) : <Login/>}
       <Toaster position="bottom-right"/>
     </div>
   );
